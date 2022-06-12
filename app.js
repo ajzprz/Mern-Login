@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 const authRoutes = require('./routes/auth')
 const cookieParser = require('cookie-parser');
 const app = express();
@@ -10,6 +11,7 @@ const { requireAuth } = require('./middleware/authMiddleware')
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser())
+app.use(morgan('tiny'))
 
 // view engine
 app.set('view engine', 'ejs');
