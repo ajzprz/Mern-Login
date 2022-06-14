@@ -8,7 +8,7 @@
   <label for="password">Password</label>
   <input type="password" name="password"  />
   <div class="password error"></div>
-  <button><a href="/burgers">login</a></button>
+  <button>login</button>
 </form>
 
 <%- include('partials/footer'); -%>
@@ -37,8 +37,8 @@
         emailError.textContent = data.errors.email;
         passwordError.textContent = data.errors.password;
       }
-      if (data.user) {
-        location.assign('/');
+      if (data) {
+        location.assign('/burgers');
       }
     }
     catch (err) {
