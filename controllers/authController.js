@@ -1,4 +1,4 @@
-const Users = require("../models/User");
+const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -12,7 +12,7 @@ const returnLoginPage = (req, res) => {
 
 const createUser = async (req, res) => {
   const { email, password } = req.body;
-  const user = new Users({ email, password });
+  const user = new User({ email, password });
   try {
     //generate salt for the password
     const salt = await bcrypt.genSalt();
@@ -36,10 +36,10 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  const user = new Users({ email, password });
+  const user = new User({ email, password });
   console.log(email, password);
   try {
-    let compEmail = await Users.find({ email: email }, async (err, user) => {
+    let compEmail = await User.find({ email: email }, async (err, user) => {
       if (err) {
         console.err("user not found")
       }
@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
       else {
         const compPassword = await bcrypt.compare(password, user[0].password)
         if (compPassword) {
-          console.log("Paasowed Match")
+          console.log("Paasowrd Match")
           const token = jwt.sign({ id: user._id }, "mern-secret", {
             expiresIn: 24 * 60 * 69,
           });
@@ -60,7 +60,7 @@ const loginUser = async (req, res) => {
             maxAge: 24 * 60 * 60 * 60 * 1000,
           });
           // res.({id : user._id})
-          res.redirect("/burgers");
+          res.json(user);
         }
         else {
           res.send("incorrect email or password")
